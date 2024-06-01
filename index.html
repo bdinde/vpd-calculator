@@ -4,118 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VPD Calculator</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="icon" href="https://bdinde.com/favicon.ico" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: #f8f9fa;
             margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background-color: #fff;
-            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #333;
         }
 
         h1 {
             text-align: center;
-        }
-
-        .login-form {
-            margin-top: 20px;
+            font-size: 24px;
+            color: #343a40;
+            margin-bottom: 20px;
         }
 
         .input-group {
-            margin: 10px 0;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
             font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
-        select, input[type="number"] {
+        select,
+        input[type="number"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ced4da;
             border-radius: 4px;
-            box-sizing: border-box; /* Ensure padding and border are included in the width */
+            font-size: 14px;
+            box-sizing: border-box;
         }
 
         button {
             width: 100%;
-            background-color: #007bff;
+            background-color: #FF3333;
             color: #fff;
             padding: 10px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            box-sizing: border-box; /* Ensure padding and border are included in the width */
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #000000;
         }
 
         p#result {
             text-align: center;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #e9ecef;
         }
 
-        footer {
-            text-align: center;
+        table {
             width: 100%;
-            position: absolute;
-            bottom: 0;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .highlight {
+            background-color: #ffeb3b;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .border {
+            border: 1px solid #dee2e6;
+        }
+
+        .even\:bg-muted:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .p-0 {
+            padding: 0;
+        }
+
+        .m-0 {
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>VPD Calculator</h1>
-        <form class="login-form">
-            <div class="input-group">
-                <label for="isMasters">Type of degree</label>
-                <select id="isMasters" onchange="toggleHSCInput()">
-                    <option value="bachelor">Bachelor's</option>
-                    <option value="masters">Master's</option>
-                </select>
-            </div>
+    <h1>Convert your Current CGPA to German grade</h1>
+    <form>
+        <div class="input-group">
+            <label for="isMasters">Type of degree</label>
+            <select id="isMasters" onchange="toggleHSCInput()">
+                <option value="bachelor">Bachelor's</option>
+                <option value="masters">Master's</option>
+            </select>
+        </div>
 
-            <div class="input-group" id="hscInput">
-                <label for="hscResult">HSC Result:</label>
-                <input type="number" id="hscResult" placeholder="Enter your grade">
-            </div>
+        <div class="input-group" id="hscInput">
+            <label for="hscResult">HSC Result:</label>
+            <input type="number" id="hscResult" placeholder="Enter your grade">
+        </div>
 
-            <div class="input-group">
-                <label for="universityCgpa">Current CGPA:</label>
-                <input type="number" id="universityCgpa" placeholder="Enter your grade">
-            </div>
+        <div class="input-group">
+            <label for="universityCgpa">Current CGPA:</label>
+            <input type="number" id="universityCgpa" placeholder="Enter your grade">
+        </div>
 
-            <div class="input-group">
-                <label for="minimumGrade">Minimum Passing Grade:</label>
-                <input type="number" id="minimumGrade" placeholder="Enter minimum passing grade">
-            </div>
+        <div class="input-group">
+            <label for="minimumGrade">Minimum Passing Grade:</label>
+            <input type="number" id="minimumGrade" placeholder="Enter minimum passing grade">
+        </div>
 
-            <button type="button" onclick="calculateVPD()">Calculate</button>
+        <button type="button" onclick="calculateVPD()">Calculate</button>
 
-            <p id="result"></p>
-        </form>
-    </div>
+        <p id="result"></p>
+    </form>
 
-    <footer>Made by <a href="https://www.facebook.com/rajibhasenraju">Rajib Hasen Raju</a></footer>
+    <table class="w-full hidden" id="gradeTable">
+        <thead>
+            <tr class="m-0 border-t p-0 even:bg-muted">
+                <th class="border px-4 py-2 text-left font-bold" align="center">German Grade</th>
+                <th class="border px-4 py-2 text-left font-bold" align="center">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="m-0 border-t p-0 even:bg-muted">
+                <td class="border px-4 py-2 text-left" align="center">1.0 - 1.5</td>
+                <td class="border px-4 py-2 text-left" align="center">Very Good (sehr gut)</td>
+            </tr>
+            <tr class="m-0 border-t p-0 even:bg-muted">
+                <td class="border px-4 py-2 text-left" align="center">1.6 - 2.5</td>
+                <td class="border px-4 py-2 text-left" align="center">Good (gut)</td>
+            </tr>
+            <tr class="m-0 border-t p-0 even:bg-muted">
+                <td class="border px-4 py-2 text-left" align="center">2.6 - 3.5</td>
+                <td class="border px-4 py-2 text-left" align="center">Satisfactory (befriedigend)</td>
+            </tr>
+            <tr class="m-0 border-t p-0 even:bg-muted">
+                <td class="border px-4 py-2 text-left" align="center">3.6 - 4.0</td>
+                <td class="border px-4 py-2 text-left" align="center">Sufficient (ausreichend)</td>
+            </tr>
+        </tbody>
+    </table>
 
     <script>
         function toggleHSCInput() {
@@ -147,19 +203,27 @@
 
             let resultText = "";
 
-            if (v <= 1.5) {
-                resultText = `Your VPD is: ${v.toFixed(2)} Sehr Gut (Very Good)`;
+            if (v <= 0) {
+                resultText = "Insufficient (nicht ausreichend)";
+            } else if (v <= 1.5) {
+                resultText = `Your VPD is: ${v.toFixed(2)} Very Good (sehr gut)`;
             } else if (v <= 2.5) {
-                resultText = `Your VPD is: ${v.toFixed(2)} Gut (Good)`;
+                resultText = `Your VPD is: ${v.toFixed(2)} Good (gut)`;
             } else if (v <= 3.5) {
-                resultText = `Your VPD is: ${v.toFixed(2)} Befriedigend (Satisfying)`;
+                resultText = `Your VPD is: ${v.toFixed(2)} Satisfactory (befriedigend)`;
             } else if (v <= 4.9) {
-                resultText = `Your VPD is: ${v.toFixed(2)} Ausreichend (Sufficient)`;
+                resultText = `Your VPD is: ${v.toFixed(2)} Sufficient (ausreichend)`;
             } else {
-                resultText = "Nicht ausreichend (Insufficient)";
+                resultText = "Insufficient (nicht ausreichend)";
             }
 
-            document.getElementById("result").textContent = resultText;
+            const resultElement = document.getElementById("result");
+            resultElement.textContent = resultText;
+
+            const gradeTable = document.getElementById("gradeTable");
+            gradeTable.classList.remove("hidden");
+
+            resultElement.classList.toggle("highlight", resultText.trim() !== "");
         }
     </script>
 </body>
